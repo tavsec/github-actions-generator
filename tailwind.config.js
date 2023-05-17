@@ -1,11 +1,12 @@
 module.exports = {
     content: [
-      "./components/**/*.{js,vue,ts}",
+      "./components/**/*.{js,vue,ts,mjs}",
       "./layouts/**/*.vue",
       "./pages/**/*.vue",
-      "./plugins/**/*.{js,ts}",
-      "./nuxt.config.{js,ts}",
-      "./node_modules/flowbite.{js,ts}"
+      "./plugins/**/*.{js,ts,mjs}",
+      "./nuxt.config.{js,ts,mjs}",
+      "./node_modules/flowbite.{js,ts,mjs}",
+      "./node_modules/flowbite/**/*.js"
 
     ],
     theme: {

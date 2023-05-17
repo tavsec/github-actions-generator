@@ -1,3 +1,4 @@
+
 <template>
   <section>
     <div class="bg-white">
@@ -6,7 +7,7 @@
         <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
           <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" />
         </div>
-        <div class="mx-auto max-w-2xl py-16 sm:py-16 lg:py-16">
+        <div class="mx-auto max-w-2xl">
 
           <div class="text-center">
             <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">GitHub Actions Generator</h1>
@@ -25,8 +26,8 @@
       <form action="" class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md">
         <label for="technology" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Technology</label>
         <select v-model="technology" id="technology" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option value="react">React</option>
-          <option value="vue">Vue</option>
+          <option value="react">React / Next</option>
+          <option value="vue">Vue / Nuxt</option>
           <option value="angular">Angular</option>
         </select>
 
@@ -52,10 +53,71 @@
           <option v-for="depl in availableDeploymentMethods" :key="depl.id" :value="depl.id">{{depl.name}}</option>
         </select>
 
-        <div class="w-full flex items-center">
-        <button type="button" class="text-center mt-5 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 w-full">
-          Get my config 🚀
+        <hr class="h-px my-8 bg-black border-0 dark:bg-black"/>
+
+        <button :disabled="!buildProcessor || !deployment" @click.prevent="showAdditionalSettings = !showAdditionalSettings" class="mt-1 relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+          <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+              {{showAdditionalSettings ? 'Hide' : 'Show'}} additional settings
+          </span>
         </button>
+
+        <div v-show="showAdditionalSettings">
+          <div>
+            <div>
+              <label for="mainbranch" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">Name of the main branch</label>
+              <input type="text" id="mainbranch" v-model="generalAdditionalSettings.mainBranch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+            </div>
+          </div>
+          <div v-if="technology === 'react'" class="mt-2">
+            <div class="mt-1">
+              <label for="buildCommand" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">React build command</label>
+              <div class="relative mb-6">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                </div>
+                <input type="text" id="buildCommand" v-model="reactAdditionalSettings.buildCommand" :class="{'pl-12': buildProcessor === 'yarn', 'pl-20': buildProcessor === 'npm'}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              </div>
+            </div>
+          </div>
+          <div v-if="technology === 'vue'" class="mt-2">
+            <div class="mt-1">
+              <label for="buildCommand" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">Vue build command</label>
+              <div class="relative mb-6">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                </div>
+                <input type="text" id="buildCommand" v-model="vueAdditionalSettings.buildCommand" :class="{'pl-12': buildProcessor === 'yarn', 'pl-20': buildProcessor === 'npm'}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              </div>
+            </div>
+          </div>
+          <div v-if="technology === 'angular'" class="mt-2">
+            <div class="mt-1">
+              <label for="buildCommand" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">Angular build command</label>
+              <div class="relative mb-6">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                </div>
+                <input type="text" id="buildCommand" v-model="angularAdditionalSettings.buildCommand" :class="{'pl-12': buildProcessor === 'yarn', 'pl-20': buildProcessor === 'npm'}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              </div>
+            </div>
+          </div>
+          <div v-if="deployment === 's3'" class="mt-2">
+            <div class="mt-1">
+              <label for="s3bucket" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">Name of the S3 Bucket</label>
+              <input type="text" id="s3bucket" v-model="s3AdditionalSettings.bucket" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+            </div>
+            <div class="mt-1">
+              <label for="awsregion" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">AWS Region</label>
+              <input type="text" id="awsregion" v-model="s3AdditionalSettings.region" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="w-full flex items-center">
+          <button :disabled="!buildProcessor || !deployment" type="button" class="text-center mt-5 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 w-full">
+            Get my config 🚀
+          </button>
         </div>
 
       </form>
@@ -64,6 +126,8 @@
 </template>
 
 <script>
+import { initFlowbite } from 'flowbite'
+
 export default {
   name: 'IndexPage',
   data(){
@@ -72,18 +136,42 @@ export default {
       buildProcessor: "",
       testingSuite: "",
       includeTesting: false,
-      deployment: ""
+      deployment: "",
+      showAdditionalSettings: false,
+      generalAdditionalSettings: {
+        mainBranch: "main"
+      },
+      reactAdditionalSettings: {
+        buildCommand: "build"
+      },
+      vueAdditionalSettings: {
+        buildCommand: "build"
+      },
+      angularAdditionalSettings: {
+        buildCommand: "build"
+      },
+      s3AdditionalSettings: {
+        region: "eu-central-1",
+        bucket: "my-bucket"
+      }
     }
+  },
+  mounted() {
+    initFlowbite();
+
   },
   watch:{
     buildProcessor(){
       this.testingSuite = ""
       this.deployment = ""
+      this.showAdditionalSettings = false
     },
     technology(){
       this.buildProcessor = ""
       this.testingSuite = ""
       this.deployment = ""
+      this.showAdditionalSettings = false
+
     }
   },
   computed:{
@@ -96,9 +184,6 @@ export default {
           }, {
             id: "yarn",
             name: "Yarn"
-          }, {
-            id: "docker",
-            name: "Docker"
           }
         ]
         case "vue": return [
@@ -108,9 +193,6 @@ export default {
           }, {
             id: "yarn",
             name: "Yarn"
-          }, {
-            id: "docker",
-            name: "Docker"
           }
         ]
         case "angular": return [
@@ -120,9 +202,6 @@ export default {
           }, {
             id: "yarn",
             name: "Yarn"
-          }, {
-            id: "docker",
-            name: "Docker"
           }
         ]
       }

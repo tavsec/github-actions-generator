@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'github-actions-generator',
+    title: 'GitHub Actions Generator',
     htmlAttrs: {
       lang: 'en',
     },
@@ -39,6 +39,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/tailwindcss'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
