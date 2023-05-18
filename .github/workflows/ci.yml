@@ -44,7 +44,7 @@ jobs:
         run: npm run lint
 
       - name: Build project
-        run: npm run build
+        run: npm run build && npm run generate
 
       - name: Deploy to GitHub Pages
         run: |
