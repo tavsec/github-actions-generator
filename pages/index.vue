@@ -104,8 +104,9 @@
           id="technology"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
-          <option value="react">React / Next</option>
-          <option value="vue">Vue / Nuxt</option>
+          <option value="react">React</option>
+          <option value="vue">Vue</option>
+          <option value="nuxt">Nuxt</option>
           <option value="angular">Angular</option>
         </select>
 
@@ -271,11 +272,12 @@
             </div>
           </div>
           <div v-if="technology === 'vue'" class="mt-2">
+          <div v-if="technology === 'nuxt'" class="mt-2">
             <div class="mt-1">
               <label
                 for="buildCommand"
                 class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >Vue build command</label
+                >Nuxt build command</label
               >
               <div class="relative mb-6">
                 <div
@@ -286,7 +288,7 @@
                 <input
                   type="text"
                   id="buildCommand"
-                  v-model="vueAdditionalSettings.buildCommand"
+                  v-model="nuxtAdditionalSettings.buildCommand"
                   :class="{
                     'pl-12': buildProcessor === 'yarn',
                     'pl-20': buildProcessor === 'npm',
@@ -394,6 +396,9 @@ export default {
       vueAdditionalSettings: {
         buildCommand: 'build',
       },
+      nuxtAdditionalSettings: {
+        buildCommand: 'build && ' + this.buildProcessor === "npm" ? "npm run generate" : this.buildProcessor + " generate",
+      },
       angularAdditionalSettings: {
         buildCommand: 'build',
       },
@@ -450,6 +455,17 @@ export default {
               name: 'Yarn',
             },
           ]
+        case 'nuxt':
+          return [
+            {
+              id: 'npm',
+              name: 'NPM',
+            },
+            {
+              id: 'yarn',
+              name: 'Yarn',
+            },
+          ]
         case 'angular':
           return [
             {
@@ -477,6 +493,17 @@ export default {
             },
           ]
         case 'vue':
+          return [
+            {
+              id: 'jest',
+              name: 'Jest',
+            },
+            {
+              id: 'cypress',
+              name: 'Cypress',
+            },
+          ]
+        case 'nuxt':
           return [
             {
               id: 'jest',
@@ -540,6 +567,25 @@ export default {
               name: 'Netlify',
             },
           ]
+        case 'nuxt':
+          return [
+            {
+              id: 's3',
+              name: 'AWS S3',
+            },
+            {
+              id: 'github',
+              name: 'GitHub Pages',
+            },
+            {
+              id: 'heroku',
+              name: 'Heroku',
+            },
+            {
+              id: 'netlify',
+              name: 'Netlify',
+            },
+          ]
         case 'angular':
           return [
             {
@@ -575,6 +621,8 @@ export default {
               ? 'build'
               : this.technology === 'vue'
               ? 'dist'
+              : this.technology === 'nuxt'
+              ? 'dist'
               : this.technology === 'angular'
               ? 'dist'
               : '',
@@ -587,6 +635,8 @@ export default {
             this.technology === 'react'
               ? 'build'
               : this.technology === 'vue'
+              ? 'dist'
+              : this.technology === 'nuxt'
               ? 'dist'
               : this.technology === 'angular'
               ? 'dist'
@@ -609,6 +659,8 @@ export default {
                 ? this.reactAdditionalSettings.buildCommand
                 : this.technology === 'vue'
                 ? this.vueAdditionalSettings.buildCommand
+                : this.technology === 'nuxt'
+                ? this.nuxtAdditionalSettings.buildCommand
                 : this.technology === 'angular'
                 ? this.angularAdditionalSettings.buildCommand
                 : '',
