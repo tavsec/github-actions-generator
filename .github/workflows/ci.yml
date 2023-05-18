@@ -12,6 +12,10 @@ on:
 
 jobs:
   ci:
+    permissions:
+      id-token: write
+      deployments: write
+      actions: write
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -47,10 +51,7 @@ jobs:
         run: npm run build && npm run generate
 
       - name: Deploy to GitHub Pages
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-
-          git add -f ./dist
-          git commit -m "Deploy project to GitHub Pages"
-          git push origin main:gh-pages
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: dist
