@@ -235,7 +235,7 @@
             <label
               for="testCommand"
               class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-              >Node version</label
+              >Test command</label
             >
             <input
               type="text"
@@ -272,6 +272,32 @@
             </div>
           </div>
           <div v-if="technology === 'vue'" class="mt-2">
+            <div class="mt-1">
+              <label
+                for="buildCommand"
+                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                >Vue build command</label
+              >
+              <div class="relative mb-6">
+                <div
+                  class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                >
+                  {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                </div>
+                <input
+                  type="text"
+                  id="buildCommand"
+                  v-model="vueAdditionalSettings.buildCommand"
+                  :class="{
+                    'pl-12': buildProcessor === 'yarn',
+                    'pl-20': buildProcessor === 'npm',
+                  }"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+            </div>
+          </div>
+
           <div v-if="technology === 'nuxt'" class="mt-2">
             <div class="mt-1">
               <label
@@ -397,7 +423,7 @@ export default {
         buildCommand: 'build',
       },
       nuxtAdditionalSettings: {
-        buildCommand: 'build && ' + this.buildProcessor === "npm" ? "npm run generate" : this.buildProcessor + " generate",
+        buildCommand: 'build',
       },
       angularAdditionalSettings: {
         buildCommand: 'build',
@@ -412,10 +438,15 @@ export default {
     initFlowbite()
   },
   watch: {
-    buildProcessor() {
+    buildProcessor(val) {
       this.testingSuite = ''
       this.deployment = ''
       this.showAdditionalSettings = false
+
+      if (this.technology === 'nuxt') {
+        this.nuxtAdditionalSettings.buildCommand =
+          'build && ' + (val === 'npm' ? 'npm run generate' : val + ' generate')
+      }
     },
     technology() {
       this.buildProcessor = ''

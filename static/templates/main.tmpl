@@ -23,7 +23,7 @@ jobs:
         run: [[installCommand]]
 
       - name: Build project
-        run: [[buildProcessor]] [[buildCommand]]
+        run: [[buildProcessor]] [[{buildCommand}]]
     
       [[#includeTesting]]
       - name: Run Jest tests
