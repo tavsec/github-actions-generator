@@ -68,6 +68,14 @@
               <input type="text" id="mainbranch" v-model="generalAdditionalSettings.mainBranch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
             </div>
           </div>
+          <div>
+            <label for="nodeVersion" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">Node version</label>
+            <input type="text" id="nodeVersion" v-model="generalAdditionalSettings.nodeVersion" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+          </div>
+          <div v-if="this.includeTesting">
+            <label for="testCommand" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">Node version</label>
+            <input type="text" id="testCommand" v-model="generalAdditionalSettings.testCommand" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+          </div>
           <div v-if="technology === 'react'" class="mt-2">
             <div class="mt-1">
               <label for="buildCommand" class="block mb-0 text-sm font-medium text-gray-900 dark:text-white">React build command</label>
@@ -115,7 +123,7 @@
 
 
         <div class="w-full flex items-center">
-          <button :disabled="!buildProcessor || !deployment" type="button" class="text-center mt-5 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 w-full">
+          <button @click="generateConfig" :disabled="!buildProcessor || !deployment" type="button" class="text-center mt-5 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 w-full">
             Get my config 🚀
           </button>
         </div>
@@ -127,6 +135,7 @@
 
 <script>
 import { initFlowbite } from 'flowbite'
+const Mustache = require('mustache');
 
 export default {
   name: 'IndexPage',
@@ -139,7 +148,9 @@ export default {
       deployment: "",
       showAdditionalSettings: false,
       generalAdditionalSettings: {
-        mainBranch: "main"
+        mainBranch: "main",
+        nodeVersion: 14,
+        testCommand: ""
       },
       reactAdditionalSettings: {
         buildCommand: "build"
@@ -171,7 +182,12 @@ export default {
       this.testingSuite = ""
       this.deployment = ""
       this.showAdditionalSettings = false
-
+    },
+    testingSuite(val){
+      if(val === "jest")
+        this.generalAdditionalSettings.testCommand = "test:unit"
+      else if(val === "cypress")
+        this.generalAdditionalSettings.testCommand = "test:e2e"
     }
   },
   computed:{
@@ -285,6 +301,52 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    async generateConfig(){
+
+      let deploySteps = ""
+      if(this.deployment === "s3"){
+        const file = await (await fetch("/templates/deploy/s3.tmpl")).text();
+        deploySteps = Mustache.render(file, {
+              awsRegion: this.s3AdditionalSettings.region,
+              bucket: this.s3AdditionalSettings.bucket,
+              outputDirectory: this.technology === "react" ? "build" :
+                                this.technology === "vue" ? "dist" : 
+                                this.technology === "angular" ? "dist" : "",
+        })
+      }
+      else if(this.deployment === "github"){
+        const file = await (await fetch("/templates/deploy/gh.tmpl")).text();
+        deploySteps = Mustache.render(file, {
+              mainBranch: this.generalAdditionalSettings.mainBranch,
+              outputDirectory: this.technology === "react" ? "build" :
+                                this.technology === "vue" ? "dist" : 
+                                this.technology === "angular" ? "dist" : "",
+        })
+      }
+
+      fetch('/templates/main.tmpl')
+        .then((response) => response.text())
+        .then((template) => {
+          
+            const output = Mustache.render(template, {
+              name: "github actions for " + this.technology,
+              mainBranch: this.generalAdditionalSettings.mainBranch,
+              nodeVersion: this.generalAdditionalSettings.nodeVersion,
+              installCommand: this.buildProcessor + " install",
+              buildProcessor: this.buildProcessor === "npm" ? "npm run" : this.buildProcessor,
+              buildCommand: this.technology === "react" ? this.reactAdditionalSettings.buildCommand :
+                            this.technology === "vue" ? this.vueAdditionalSettings.buildCommand : 
+                            this.technology === "angular" ? this.angularAdditionalSettings.buildCommand : "",
+              includeTesting: this.includeTesting,
+              testCommand: this.generalAdditionalSettings.testCommand,
+              deploySteps: deploySteps
+            });
+
+            console.log(output)
+      });
     }
   }
 }
