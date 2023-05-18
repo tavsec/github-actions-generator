@@ -43,7 +43,7 @@ jobs:
 
       - name: Build project
 
-        run: NUXT_APP_BASE_URL=/github-actions-generator/ npm run build && NUXT_APP_BASE_URL=/github-actions-generator/ npm run generate
+        run: npm run build && npm run generate
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.0
