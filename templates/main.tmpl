@@ -1,0 +1,35 @@
+{{=[[ ]]=}}
+name: [[name]]
+
+on:
+  push:
+    branches:
+      - [[mainBranch]]
+
+jobs:
+  build-test-deploy:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: [[nodeVersion]]
+
+      - name: Install dependencies
+        run: [[installCommand]]
+
+      - name: Build project
+        run: [[buildProcessor]] [[{buildCommand}]]
+    
+      [[#includeTesting]]
+      - name: Run Jest tests
+        run: [[buildProcessor]] [[testCommand]]
+      [[/includeTesting]]
+
+[[{deploySteps}]]
