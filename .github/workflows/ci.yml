@@ -17,8 +17,6 @@ jobs:
         os: [ubuntu-latest]
         node: [lts/*]
 
-    environment:
-
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
