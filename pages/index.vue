@@ -38,8 +38,8 @@
               GitHub Actions Generator
             </h1>
             <p class="mt-6 text-lg leading-8 text-gray-600">
-              Select technology, testing suite and deployment, and the system
-              will generate GitHub Actions file with instructions 🚀
+              Select Javascript framework, testing suite and deployment, and the
+              system will generate GitHub Actions file with instructions 🚀
             </p>
             <p class="mt-6 text-lg leading-8 text-gray-600">
               Developed for
@@ -97,7 +97,7 @@
         <label
           for="technology"
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Technology</label
+          >Framework</label
         >
         <select
           v-model="technology"
@@ -394,6 +394,27 @@
         </div>
       </form>
     </div>
+    <div v-if="generatedConfig">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-xl text-bold"><b>Your config</b></h2>
+      </div>
+      
+      <div
+          class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md mx-auto max-w-2xl my-2"
+        >
+        <h3 class="text-md">Instructions:</h3>
+      </div>
+      <div class="mx-auto max-w-2xl">
+        <div
+          class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md"
+        >
+
+          <pre>
+        <code v-highlight  class="yaml rounded-md" id="code-output">{{ generatedConfig }}</code>
+      </pre>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -401,10 +422,12 @@
 import { initFlowbite } from 'flowbite'
 const Mustache = require('mustache')
 
+
 export default {
   name: 'IndexPage',
   data() {
     return {
+      generatedConfig: '',
       technology: 'react',
       buildProcessor: '',
       testingSuite: '',
@@ -700,7 +723,10 @@ export default {
             deploySteps: deploySteps,
           })
 
+          this.generatedConfig = output
           console.log(output)
+          this.$forceUpdate();
+
         })
     },
   },
