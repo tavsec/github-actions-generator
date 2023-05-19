@@ -43,7 +43,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/tailwindcss',
-    'nuxt-highlightjs'
+    'nuxt-highlightjs',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

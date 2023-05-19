@@ -89,7 +89,10 @@
         </div>
       </div>
     </div>
-    <div v-if="!generatedConfig" class="mx-auto max-w-2xl py-16 sm:py-16 lg:py-16">
+    <div
+      v-if="!generatedConfig"
+      class="mx-auto max-w-2xl py-16 sm:py-16 lg:py-16"
+    >
       <form
         action=""
         class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md"
@@ -395,30 +398,43 @@
       </form>
     </div>
     <div v-if="generatedConfig">
-      
       <div
-          class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md mx-auto max-w-2xl my-2 mt-5"
-        >
+        class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md mx-auto max-w-2xl my-2 mt-5"
+      >
         <h3 class="text-lg"><strong>Instructions:</strong></h3>
         <div>
           <ul class="list-disc list-inside">
             <li>Go to your GitHub repository's homepage.</li>
             <li>Click on the "Actions" tab near the top of the repository.</li>
-            <li>If you haven't used GitHub Actions before, you may need to enable it by clicking on the <strong>"Enable GitHub Actions" button.</strong></li>
-            <li>Copy the content from the box below to the file under <strong><code>&lt;root&gt;/.github/workflows/ci.yaml</code></strong></li>
+            <li>
+              If you haven't used GitHub Actions before, you may need to enable
+              it by clicking on the
+              <strong>"Enable GitHub Actions" button.</strong>
+            </li>
+            <li>
+              Copy the content from the box below to the file under
+              <strong
+                ><code>&lt;root&gt;/.github/workflows/ci.yaml</code></strong
+              >
+            </li>
             <li>Commit the changes to the repository.</li>
-            <li>GitHub Actions will automatically detect the workflow file and start executing it according to the defined triggers.</li>
-            <li>You can monitor the status and output of your workflows on the "Actions" tab in your repository.</li>
+            <li>
+              GitHub Actions will automatically detect the workflow file and
+              start executing it according to the defined triggers.
+            </li>
+            <li>
+              You can monitor the status and output of your workflows on the
+              "Actions" tab in your repository.
+            </li>
           </ul>
         </div>
 
-        <button class="mt-5 text-sm underline" @click="generatedConfig = ''">Go back...</button>
+        <button class="mt-5 text-sm underline" @click="generatedConfig = ''">
+          Go back...
+        </button>
       </div>
       <div class="mx-auto max-w-2xl">
-        <div
-          class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md"
-        >
-
+        <div class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md">
           <pre>
         <code v-highlight  class="yaml rounded-md" id="code-output">{{ generatedConfig }}</code>
       </pre>
@@ -431,7 +447,6 @@
 <script>
 import { initFlowbite } from 'flowbite'
 const Mustache = require('mustache')
-
 
 export default {
   name: 'IndexPage',
@@ -735,8 +750,7 @@ export default {
 
           this.generatedConfig = output
           console.log(output)
-          this.$forceUpdate();
-
+          this.$forceUpdate()
         })
     },
   },
