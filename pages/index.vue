@@ -401,7 +401,7 @@
       <div
         class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md mx-auto max-w-2xl my-2 mt-5"
       >
-        <h3 class="text-lg"><strong>Instructions:</strong></h3>
+        <h3 class="text-lg"><strong>📝 Instructions:</strong></h3>
         <div>
           <ul class="list-disc list-inside">
             <li>Go to your GitHub repository's homepage.</li>
@@ -411,6 +411,14 @@
               it by clicking on the
               <strong>"Enable GitHub Actions" button.</strong>
             </li>
+
+            <div v-if="deployment === 's3'">
+              <li>Go to <strong>"Settings" &gt; "Secrets and variables" &gt; "Actions"</strong> and add two new secrets:</li>
+              <ul class="list-disc list-inside space-y-1 pl-5">
+                <li><strong><code>AWS_ACCESS_KEY_ID</code></strong> as the name and your access key ID as the value.</li>
+                <li><strong><code>AWS_SECRET_ACCESS_KEY</code></strong> as the name and your secret access key as the value.</li>
+              </ul>
+            </div>
             <li>
               Copy the content from the box below to the file under
               <strong
@@ -426,11 +434,22 @@
               You can monitor the status and output of your workflows on the
               "Actions" tab in your repository.
             </li>
+            <div v-if="deployment === 'github'">
+              <li>As you selected GitHub pages as your deployment, wait for the Actions job to complete.</li>
+              <li>Then, complete the following:</li>
+              <ul class="list-disc list-inside space-y-1 pl-5">
+                <li>Go to the repository <strong>Settings</strong>.</li>
+                <li>Scroll down to the <strong>GitHub Pages</strong> section.</li>
+                <li>Under <strong>"Source"</strong>, click the dropdown menu and select the branch <strong><code>gh-pages</code></strong>.</li>
+                <li>Choose the <strong><code>/(root)</code></strong> directory. </li>
+                <li>Click the "Save" button to apply the changes. After the changes are applied, you will get the URL to the deployed website.</li>
+              </ul>
+            </div>
           </ul>
         </div>
 
         <button class="mt-5 text-sm underline" @click="generatedConfig = ''">
-          Go back...
+          ⬅️ Back ...
         </button>
       </div>
       <div class="mx-auto max-w-2xl">
