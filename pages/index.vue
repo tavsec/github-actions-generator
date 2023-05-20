@@ -474,11 +474,11 @@
               <ul class="list-disc list-inside space-y-1 pl-5">
                 <li>
                   <strong><code>AWS_ACCESS_KEY_ID</code></strong> as the name
-                  and your access key ID as the value.
+                  and your AWS access key ID as the value.
                 </li>
                 <li>
                   <strong><code>AWS_SECRET_ACCESS_KEY</code></strong> as the
-                  name and your secret access key as the value.
+                  name and your AWS secret access key as the value.
                 </li>
               </ul>
             </div>
