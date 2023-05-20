@@ -28,6 +28,7 @@
     "@nuxtjs/tailwindcss": "^5.3.3",
     "eslint-config-prettier": "^8.5.0",
     "postcss": "^8.4.17",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "webpack": "^4.46.0"
   }
 }

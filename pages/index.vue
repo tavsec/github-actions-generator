@@ -415,6 +415,23 @@
                 />
               </div>
             </div>
+
+            <div v-if="deployment === 'netlify'" class="mt-2">
+              <div class="mt-1">
+                <label
+                  for="netlifysiteid"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >Netlify Site ID</label
+                >
+                <input
+                  type="text"
+                  id="netlifysiteid"
+                  v-model="netlifyAdditionalSettings.siteId"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -469,6 +486,7 @@
               <li>
                 Generate a Heroku API key by following these
                 <a
+                  target="_blank"
                   href="https://devcenter.heroku.com/articles/authentication#api-key"
                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >instructions</a
@@ -480,6 +498,25 @@
               <li>
                 Enter <strong><code>HEROKU_API_KEY</code></strong> as the name
                 and paste your Heroku API key as the value.
+              </li>
+              <li>Click "Add secret" to save the secret.</li>
+            </div>
+            <div v-if="deployment === 'netlify'">
+              <li>
+                Create a Netlify Personal Access Token by following these
+                <a
+                  target="_blank"
+                  href="https://docs.netlify.com/cli/get-started/#obtain-a-token-in-the-netlify-ui"
+                  class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  >instructions</a
+                >.
+              </li>
+              <li>Go to the GitHub repository settings.</li>
+              <li>Click on <strong>Secrets</strong> in the left sidebar.</li>
+              <li>Click on <strong>New repository secret</strong>.</li>
+              <li>
+                Enter <strong><code>NETLIFY_AUTH_TOKEN</code></strong> as the
+                name and paste your Netlify Personal Access Token as the value.
               </li>
               <li>Click "Add secret" to save the secret.</li>
             </div>
@@ -581,6 +618,9 @@ export default {
       herokuAdditionalSettings: {
         applicationName: 'myApplication',
         email: 'my@email.com',
+      },
+      netlifyAdditionalSettings: {
+        siteId: 'site-id',
       },
     }
   },
@@ -840,6 +880,24 @@ export default {
               ? 'dist'
               : '',
         })
+      } else if (this.deployment === 'netlify') {
+        const file = await (
+          await fetch('/templates/deploy/netlify.tmpl')
+        ).text()
+        deploySteps = Mustache.render(file, {
+          mainBranch: this.generalAdditionalSettings.mainBranch,
+          netlifyId: this.netlifyAdditionalSettings.siteId,
+          outputDirectory:
+            this.technology === 'react'
+              ? 'build'
+              : this.technology === 'vue'
+              ? 'dist'
+              : this.technology === 'nuxt'
+              ? 'dist'
+              : this.technology === 'angular'
+              ? 'dist'
+              : '',
+        })
       }
 
       fetch('/templates/main.tmpl')
@@ -868,10 +926,21 @@ export default {
           })
 
           this.generatedConfig = output
-          console.log(output)
           this.$forceUpdate()
         })
     },
   },
 }
 </script>
+
+<style>
+code,
+.code {
+  font-family: 'Source Code Pro';
+  background: #292929;
+  color: #fafafa;
+  font-size: 16px;
+  padding: 1px;
+  border-radius: 5px;
+}
+</style>
