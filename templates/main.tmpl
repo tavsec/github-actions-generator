@@ -28,8 +28,8 @@ jobs:
         run: [[buildProcessor]] [[{buildCommand}]]
     
       [[#includeTesting]]
-      - name: Run Jest tests
+      - name: Run tests
         run: [[buildProcessor]] [[testCommand]]
       [[/includeTesting]]
 
-[[{deploySteps}]]
+      [[{deploySteps}]]
