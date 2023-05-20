@@ -840,7 +840,7 @@ export default {
     async generateConfig() {
       let deploySteps = ''
       if (this.deployment === 's3') {
-        const file = await (await fetch('/templates/deploy/s3.tmpl')).text()
+        const file = await (await fetch('/github-actions-generator/templates/deploy/s3.tmpl')).text()
         deploySteps = Mustache.render(file, {
           awsRegion: this.s3AdditionalSettings.region,
           bucket: this.s3AdditionalSettings.bucket,
@@ -856,7 +856,7 @@ export default {
               : '',
         })
       } else if (this.deployment === 'github') {
-        const file = await (await fetch('/templates/deploy/gh.tmpl')).text()
+        const file = await (await fetch('/github-actions-generator/templates/deploy/gh.tmpl')).text()
         deploySteps = Mustache.render(file, {
           mainBranch: this.generalAdditionalSettings.mainBranch,
           outputDirectory:
@@ -871,7 +871,7 @@ export default {
               : '',
         })
       } else if (this.deployment === 'heroku') {
-        const file = await (await fetch('/templates/deploy/heroku.tmpl')).text()
+        const file = await (await fetch('/github-actions-generator/templates/deploy/heroku.tmpl')).text()
         deploySteps = Mustache.render(file, {
           mainBranch: this.generalAdditionalSettings.mainBranch,
           herokuAppName: this.herokuAdditionalSettings.applicationName,
@@ -889,7 +889,7 @@ export default {
         })
       } else if (this.deployment === 'netlify') {
         const file = await (
-          await fetch('/templates/deploy/netlify.tmpl')
+          await fetch('/github-actions-generator/templates/deploy/netlify.tmpl')
         ).text()
         deploySteps = Mustache.render(file, {
           mainBranch: this.generalAdditionalSettings.mainBranch,
@@ -907,7 +907,7 @@ export default {
         })
       }
 
-      fetch('/templates/main.tmpl')
+      fetch('/github-actions-generator/templates/main.tmpl')
         .then((response) => response.text())
         .then((template) => {
           const output = Mustache.render(template, {
