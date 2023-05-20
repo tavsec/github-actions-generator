@@ -235,187 +235,187 @@
             />
           </div>
           <div v-show="this.buildProcessor">
-          <div v-if="this.includeTesting">
-            <label
-              for="testCommand"
-              class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-              >Test command</label
-            >
-            <input
-              type="text"
-              id="testCommand"
-              v-model="generalAdditionalSettings.testCommand"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
-            />
-          </div>
-          <div v-if="technology === 'react'" class="mt-2">
-            <div class="mt-1">
+            <div v-if="this.includeTesting">
               <label
-                for="buildCommand"
+                for="testCommand"
                 class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >React build command</label
+                >Test command</label
               >
-              <div class="relative mb-6">
-                <div
-                  class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+              <input
+                type="text"
+                id="testCommand"
+                v-model="generalAdditionalSettings.testCommand"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              />
+            </div>
+            <div v-if="technology === 'react'" class="mt-2">
+              <div class="mt-1">
+                <label
+                  for="buildCommand"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >React build command</label
                 >
-                  {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                <div class="relative mb-6">
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                  >
+                    {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                  </div>
+                  <input
+                    type="text"
+                    id="buildCommand"
+                    v-model="reactAdditionalSettings.buildCommand"
+                    :class="{
+                      'pl-12': buildProcessor === 'yarn',
+                      'pl-20': buildProcessor === 'npm',
+                    }"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
                 </div>
-                <input
-                  type="text"
-                  id="buildCommand"
-                  v-model="reactAdditionalSettings.buildCommand"
-                  :class="{
-                    'pl-12': buildProcessor === 'yarn',
-                    'pl-20': buildProcessor === 'npm',
-                  }"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
               </div>
             </div>
-          </div>
-          <div v-if="technology === 'vue'" class="mt-2">
-            <div class="mt-1">
-              <label
-                for="buildCommand"
-                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >Vue build command</label
-              >
-              <div class="relative mb-6">
-                <div
-                  class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            <div v-if="technology === 'vue'" class="mt-2">
+              <div class="mt-1">
+                <label
+                  for="buildCommand"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >Vue build command</label
                 >
-                  {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                <div class="relative mb-6">
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                  >
+                    {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                  </div>
+                  <input
+                    type="text"
+                    id="buildCommand"
+                    v-model="vueAdditionalSettings.buildCommand"
+                    :class="{
+                      'pl-12': buildProcessor === 'yarn',
+                      'pl-20': buildProcessor === 'npm',
+                    }"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
                 </div>
-                <input
-                  type="text"
-                  id="buildCommand"
-                  v-model="vueAdditionalSettings.buildCommand"
-                  :class="{
-                    'pl-12': buildProcessor === 'yarn',
-                    'pl-20': buildProcessor === 'npm',
-                  }"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
               </div>
             </div>
-          </div>
 
-          <div v-if="technology === 'nuxt'" class="mt-2">
-            <div class="mt-1">
-              <label
-                for="buildCommand"
-                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >Nuxt build command</label
-              >
-              <div class="relative mb-6">
-                <div
-                  class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            <div v-if="technology === 'nuxt'" class="mt-2">
+              <div class="mt-1">
+                <label
+                  for="buildCommand"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >Nuxt build command</label
                 >
-                  {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                <div class="relative mb-6">
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                  >
+                    {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                  </div>
+                  <input
+                    type="text"
+                    id="buildCommand"
+                    v-model="nuxtAdditionalSettings.buildCommand"
+                    :class="{
+                      'pl-12': buildProcessor === 'yarn',
+                      'pl-20': buildProcessor === 'npm',
+                    }"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
                 </div>
+              </div>
+            </div>
+            <div v-if="technology === 'angular'" class="mt-2">
+              <div class="mt-1">
+                <label
+                  for="buildCommand"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >Angular build command</label
+                >
+                <div class="relative mb-6">
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                  >
+                    {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
+                  </div>
+                  <input
+                    type="text"
+                    id="buildCommand"
+                    v-model="angularAdditionalSettings.buildCommand"
+                    :class="{
+                      'pl-12': buildProcessor === 'yarn',
+                      'pl-20': buildProcessor === 'npm',
+                    }"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+            <div v-if="deployment === 's3'" class="mt-2">
+              <div class="mt-1">
+                <label
+                  for="s3bucket"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >Name of the S3 Bucket</label
+                >
                 <input
                   type="text"
-                  id="buildCommand"
-                  v-model="nuxtAdditionalSettings.buildCommand"
-                  :class="{
-                    'pl-12': buildProcessor === 'yarn',
-                    'pl-20': buildProcessor === 'npm',
-                  }"
+                  id="s3bucket"
+                  v-model="s3AdditionalSettings.bucket"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div class="mt-1">
+                <label
+                  for="awsregion"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >AWS Region</label
+                >
+                <input
+                  type="text"
+                  id="awsregion"
+                  v-model="s3AdditionalSettings.region"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
                 />
               </div>
             </div>
-          </div>
-          <div v-if="technology === 'angular'" class="mt-2">
-            <div class="mt-1">
-              <label
-                for="buildCommand"
-                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >Angular build command</label
-              >
-              <div class="relative mb-6">
-                <div
-                  class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-                >
-                  {{ buildProcessor === 'npm' ? 'npm run' : buildProcessor }}
-                </div>
-                <input
-                  type="text"
-                  id="buildCommand"
-                  v-model="angularAdditionalSettings.buildCommand"
-                  :class="{
-                    'pl-12': buildProcessor === 'yarn',
-                    'pl-20': buildProcessor === 'npm',
-                  }"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-              </div>
-            </div>
-          </div>
-          <div v-if="deployment === 's3'" class="mt-2">
-            <div class="mt-1">
-              <label
-                for="s3bucket"
-                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >Name of the S3 Bucket</label
-              >
-              <input
-                type="text"
-                id="s3bucket"
-                v-model="s3AdditionalSettings.bucket"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required
-              />
-            </div>
-            <div class="mt-1">
-              <label
-                for="awsregion"
-                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >AWS Region</label
-              >
-              <input
-                type="text"
-                id="awsregion"
-                v-model="s3AdditionalSettings.region"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required
-              />
-            </div>
-          </div>
 
-          <div v-if="deployment === 'heroku'" class="mt-2">
-            <div class="mt-1">
-              <label
-                for="applicationname"
-                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >Name of the Heroku Application</label
-              >
-              <input
-                type="text"
-                id="applicationname"
-                v-model="herokuAdditionalSettings.applicationName"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required
-              />
-            </div>
-            <div class="mt-1">
-              <label
-                for="email"
-                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
-                >Heroku Email</label
-              >
-              <input
-                type="text"
-                id="applicationname"
-                v-model="herokuAdditionalSettings.email"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required
-              />
+            <div v-if="deployment === 'heroku'" class="mt-2">
+              <div class="mt-1">
+                <label
+                  for="applicationname"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >Name of the Heroku Application</label
+                >
+                <input
+                  type="text"
+                  id="applicationname"
+                  v-model="herokuAdditionalSettings.applicationName"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div class="mt-1">
+                <label
+                  for="email"
+                  class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                  >Heroku Email</label
+                >
+                <input
+                  type="text"
+                  id="applicationname"
+                  v-model="herokuAdditionalSettings.email"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
             </div>
           </div>
-        </div>
         </div>
 
         <div class="w-full flex items-center">
@@ -446,18 +446,41 @@
             </li>
 
             <div v-if="deployment === 's3'">
-              <li>Go to <strong>"Settings" &gt; "Secrets and variables" &gt; "Actions"</strong> and add two new secrets:</li>
+              <li>
+                Go to
+                <strong
+                  >"Settings" &gt; "Secrets and variables" &gt;
+                  "Actions"</strong
+                >
+                and add two new secrets:
+              </li>
               <ul class="list-disc list-inside space-y-1 pl-5">
-                <li><strong><code>AWS_ACCESS_KEY_ID</code></strong> as the name and your access key ID as the value.</li>
-                <li><strong><code>AWS_SECRET_ACCESS_KEY</code></strong> as the name and your secret access key as the value.</li>
+                <li>
+                  <strong><code>AWS_ACCESS_KEY_ID</code></strong> as the name
+                  and your access key ID as the value.
+                </li>
+                <li>
+                  <strong><code>AWS_SECRET_ACCESS_KEY</code></strong> as the
+                  name and your secret access key as the value.
+                </li>
               </ul>
             </div>
             <div v-if="deployment === 'heroku'">
-              <li>Generate a Heroku API key by following these <a href="https://devcenter.heroku.com/articles/authentication#api-key" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">instructions</a>.</li>
+              <li>
+                Generate a Heroku API key by following these
+                <a
+                  href="https://devcenter.heroku.com/articles/authentication#api-key"
+                  class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  >instructions</a
+                >.
+              </li>
               <li>Go to the GitHub repository settings.</li>
               <li>Click on <strong>Secrets</strong> in the left sidebar.</li>
               <li>Click on <strong>New repository secret</strong>.</li>
-              <li>Enter <strong><code>HEROKU_API_KEY</code></strong> as the name and paste your Heroku API key as the value.</li>
+              <li>
+                Enter <strong><code>HEROKU_API_KEY</code></strong> as the name
+                and paste your Heroku API key as the value.
+              </li>
               <li>Click "Add secret" to save the secret.</li>
             </div>
             <li>
@@ -476,14 +499,29 @@
               "Actions" tab in your repository.
             </li>
             <div v-if="deployment === 'github'">
-              <li>As you selected GitHub pages as your deployment, wait for the Actions job to complete.</li>
+              <li>
+                As you selected GitHub pages as your deployment, wait for the
+                Actions job to complete.
+              </li>
               <li>Then, complete the following:</li>
               <ul class="list-disc list-inside space-y-1 pl-5">
                 <li>Go to the repository <strong>Settings</strong>.</li>
-                <li>Scroll down to the <strong>GitHub Pages</strong> section.</li>
-                <li>Under <strong>"Source"</strong>, click the dropdown menu and select the branch <strong><code>gh-pages</code></strong>.</li>
-                <li>Choose the <strong><code>/(root)</code></strong> directory. </li>
-                <li>Click the "Save" button to apply the changes. After the changes are applied, you will get the URL to the deployed website.</li>
+                <li>
+                  Scroll down to the <strong>GitHub Pages</strong> section.
+                </li>
+                <li>
+                  Under <strong>"Source"</strong>, click the dropdown menu and
+                  select the branch <strong><code>gh-pages</code></strong
+                  >.
+                </li>
+                <li>
+                  Choose the <strong><code>/(root)</code></strong> directory.
+                </li>
+                <li>
+                  Click the "Save" button to apply the changes. After the
+                  changes are applied, you will get the URL to the deployed
+                  website.
+                </li>
               </ul>
             </div>
           </ul>
@@ -785,7 +823,7 @@ export default {
               ? 'dist'
               : '',
         })
-      }else if (this.deployment === 'heroku') {
+      } else if (this.deployment === 'heroku') {
         const file = await (await fetch('/templates/deploy/heroku.tmpl')).text()
         deploySteps = Mustache.render(file, {
           mainBranch: this.generalAdditionalSettings.mainBranch,
