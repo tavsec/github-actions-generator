@@ -234,6 +234,7 @@
               required
             />
           </div>
+          <div v-show="this.buildProcessor">
           <div v-if="this.includeTesting">
             <label
               for="testCommand"
@@ -383,6 +384,38 @@
               />
             </div>
           </div>
+
+          <div v-if="deployment === 'heroku'" class="mt-2">
+            <div class="mt-1">
+              <label
+                for="applicationname"
+                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                >Name of the Heroku Application</label
+              >
+              <input
+                type="text"
+                id="applicationname"
+                v-model="herokuAdditionalSettings.applicationName"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              />
+            </div>
+            <div class="mt-1">
+              <label
+                for="email"
+                class="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+                >Heroku Email</label
+              >
+              <input
+                type="text"
+                id="applicationname"
+                v-model="herokuAdditionalSettings.email"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              />
+            </div>
+          </div>
+        </div>
         </div>
 
         <div class="w-full flex items-center">
@@ -418,6 +451,14 @@
                 <li><strong><code>AWS_ACCESS_KEY_ID</code></strong> as the name and your access key ID as the value.</li>
                 <li><strong><code>AWS_SECRET_ACCESS_KEY</code></strong> as the name and your secret access key as the value.</li>
               </ul>
+            </div>
+            <div v-if="deployment === 'heroku'">
+              <li>Generate a Heroku API key by following these <a href="https://devcenter.heroku.com/articles/authentication#api-key" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">instructions</a>.</li>
+              <li>Go to the GitHub repository settings.</li>
+              <li>Click on <strong>Secrets</strong> in the left sidebar.</li>
+              <li>Click on <strong>New repository secret</strong>.</li>
+              <li>Enter <strong><code>HEROKU_API_KEY</code></strong> as the name and paste your Heroku API key as the value.</li>
+              <li>Click "Add secret" to save the secret.</li>
             </div>
             <li>
               Copy the content from the box below to the file under
@@ -477,7 +518,7 @@ export default {
       testingSuite: '',
       includeTesting: false,
       deployment: '',
-      showAdditionalSettings: false,
+      showAdditionalSettings: true,
       generalAdditionalSettings: {
         mainBranch: 'main',
         nodeVersion: 14,
@@ -499,6 +540,10 @@ export default {
         region: 'eu-central-1',
         bucket: 'my-bucket',
       },
+      herokuAdditionalSettings: {
+        applicationName: 'myApplication',
+        email: 'my@email.com',
+      },
     }
   },
   mounted() {
@@ -508,7 +553,7 @@ export default {
     buildProcessor(val) {
       this.testingSuite = ''
       this.deployment = ''
-      this.showAdditionalSettings = false
+      //this.showAdditionalSettings = false
 
       if (this.technology === 'nuxt') {
         this.nuxtAdditionalSettings.buildCommand =
@@ -519,7 +564,7 @@ export default {
       this.buildProcessor = ''
       this.testingSuite = ''
       this.deployment = ''
-      this.showAdditionalSettings = false
+      //this.showAdditionalSettings = false
     },
     testingSuite(val) {
       if (val === 'jest')
@@ -729,6 +774,23 @@ export default {
         const file = await (await fetch('/templates/deploy/gh.tmpl')).text()
         deploySteps = Mustache.render(file, {
           mainBranch: this.generalAdditionalSettings.mainBranch,
+          outputDirectory:
+            this.technology === 'react'
+              ? 'build'
+              : this.technology === 'vue'
+              ? 'dist'
+              : this.technology === 'nuxt'
+              ? 'dist'
+              : this.technology === 'angular'
+              ? 'dist'
+              : '',
+        })
+      }else if (this.deployment === 'heroku') {
+        const file = await (await fetch('/templates/deploy/heroku.tmpl')).text()
+        deploySteps = Mustache.render(file, {
+          mainBranch: this.generalAdditionalSettings.mainBranch,
+          herokuAppName: this.herokuAdditionalSettings.applicationName,
+          herokuEmail: this.herokuAdditionalSettings.email,
           outputDirectory:
             this.technology === 'react'
               ? 'build'
