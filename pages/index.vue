@@ -30,7 +30,7 @@
             "
           />
         </div>
-        <div class="mx-auto max-w-2xl">
+        <div class="mx-auto max-w-4xl">
           <div class="text-center">
             <h1
               class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
@@ -91,7 +91,7 @@
     </div>
     <div
       v-if="!generatedConfig"
-      class="mx-auto max-w-2xl py-16 sm:py-16 lg:py-16"
+      class="mx-auto max-w-4xl py-16 sm:py-16 lg:py-16"
     >
       <form
         action=""
@@ -449,7 +449,7 @@
     </div>
     <div v-if="generatedConfig">
       <div
-        class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md mx-auto max-w-2xl my-2 mt-5"
+        class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md mx-auto max-w-4xl my-2 mt-5"
       >
         <h3 class="text-lg"><strong>📝 Instructions:</strong></h3>
         <div>
@@ -568,7 +568,14 @@
           ⬅️ Back ...
         </button>
       </div>
-      <div class="mx-auto max-w-2xl">
+      <div class="mx-auto max-w-4xl">
+        <button
+            @click="downloadFile"
+            type="button"
+            class="text-center mt-5 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 w-full"
+          >
+            Download Actions file ⬇️
+          </button>
         <div class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md">
           <pre>
         <code v-highlight  class="yaml rounded-md" id="code-output">{{ generatedConfig }}</code>
@@ -925,10 +932,25 @@ export default {
             deploySteps: deploySteps,
           })
 
+          console.log(deploySteps)
+
           this.generatedConfig = output
           this.$forceUpdate()
         })
     },
+
+    
+    downloadFile() {
+      console.log("Downloading")
+        const element = document.createElement('a');
+        const file = new Blob([this.generatedConfig], { type: 'text/yaml' });
+        element.href = URL.createObjectURL(file);
+        element.download = "ci.yaml";
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+    
   },
 }
 </script>

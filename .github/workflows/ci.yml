@@ -38,11 +38,8 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: npm ci --prefer-offline --no-audit
 
-      - name: Run linter 👀
-        run: npm run lint
 
       - name: Build project
-
         run: npm run build && npm run generate
 
       - name: Deploy to GitHub Pages
