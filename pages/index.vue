@@ -450,6 +450,7 @@
     <div v-if="generatedConfig">
       <div
         class="shadow-md relative p-3 bg-opacity-10 bg-black rounded-md mx-auto max-w-4xl my-2 mt-5"
+        id="instructions"
       >
         <h3 class="text-lg"><strong>📝 Instructions:</strong></h3>
         <div>
@@ -589,11 +590,14 @@
 <script>
 import { initFlowbite } from 'flowbite'
 const Mustache = require('mustache')
+import JSConfetti from 'js-confetti'
+
 
 export default {
   name: 'IndexPage',
   data() {
     return {
+      jsConfetti: new JSConfetti(),
       generatedConfig: '',
       technology: 'react',
       buildProcessor: '',
@@ -633,6 +637,7 @@ export default {
   },
   mounted() {
     initFlowbite()
+
   },
   watch: {
     buildProcessor(val) {
@@ -932,9 +937,12 @@ export default {
             deploySteps: deploySteps,
           })
 
-          console.log(deploySteps)
-
           this.generatedConfig = output
+          this.$nextTick(() => {
+            let instructions = document.getElementById("instructions");
+            instructions.scrollIntoView({behavior: 'smooth'}, true);
+          })
+          this.jsConfetti.addConfetti()
           this.$forceUpdate()
         })
     },

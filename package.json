@@ -17,6 +17,7 @@
     "core-js": "^3.25.3",
     "flowbite": "^1.6.5",
     "highlight.js": "^11.8.0",
+    "js-confetti": "^0.11.0",
     "mustache": "^4.2.0",
     "nuxt": "^2.15.8",
     "nuxt-highlightjs": "^1.0.3",
