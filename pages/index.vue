@@ -192,7 +192,6 @@
         <hr class="h-px my-8 bg-black border-0 dark:bg-black" />
 
         <button
-          :disabled="!buildProcessor || !deployment"
           @click.prevent="showAdditionalSettings = !showAdditionalSettings"
           class="mt-1 relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
         >
@@ -440,7 +439,7 @@
             @click="generateConfig"
             :disabled="!buildProcessor || !deployment"
             type="button"
-            class="text-center mt-5 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 w-full"
+            class="disabled:opacity-25 text-center mt-5 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 w-full"
           >
             Get my config 🚀
           </button>
@@ -522,7 +521,7 @@
               <li>Click "Add secret" to save the secret.</li>
             </div>
             <li>
-              Copy the content from the box below to the file under
+              Download the actions file below, and place it in your repository, in your workflows folder. The location of the file should be: 
               <strong
                 ><code>&lt;root&gt;/.github/workflows/ci.yaml</code></strong
               >
@@ -530,7 +529,7 @@
             <li>Commit the changes to the repository.</li>
             <li>
               GitHub Actions will automatically detect the workflow file and
-              start executing it according to the defined triggers.
+              start executing it when changes are pushed to your main branch.
             </li>
             <li>
               You can monitor the status and output of your workflows on the
