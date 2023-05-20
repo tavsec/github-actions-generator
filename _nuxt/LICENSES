@@ -1,10 +1,4 @@
 /*!
-   * mustache.js - Logic-less {{mustache}} templates with JavaScript
-   * http://github.com/janl/mustache.js
-   */
-
-
-/*!
  * vue-client-only v0.0.0-semantic-release
  * (c) 2021-present egoist <0x142857@gmail.com>
  * Released under the MIT License.
@@ -15,6 +9,12 @@
  * (c) 2018-present egoist <0x142857@gmail.com>
  * Released under the MIT License.
  */
+
+
+/*!
+   * mustache.js - Logic-less {{mustache}} templates with JavaScript
+   * http://github.com/janl/mustache.js
+   */
 
 
 /*!
